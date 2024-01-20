@@ -76,15 +76,13 @@ for pull in repo.get_pulls(state="all"):
 # display line change and file change
 @app.route("/user")
 def user():
-  
-       user_data = [{"author": author, "count": count} for author, count in contributors_data.items()]
-        return jsonify(user_data)
+    user_data = [{"author": author, "count": count} for author, count in contributors_data.items()]
+    return jsonify(user_data)
 
 
 # display merge count
 @app.route("/merge_count")
 def get_merge_count():
-
     merge_count_data = [{"author": author, "count": count} for author, count in merged_pr_counts.items()]
     return jsonify(merge_count_data)
 
