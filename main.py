@@ -77,8 +77,8 @@ for pull in repo.get_pulls(state="all"):
 @app.route("/user")
 def user():
   
-        merge_count_data = [{"author": author, "count": count} for author, count in contributors_data.items()]
-        return jsonify(merge_count_data)
+       user_data = [{"author": author, "count": count} for author, count in contributors_data.items()]
+        return jsonify(user_data)
 
 
 # display merge count
