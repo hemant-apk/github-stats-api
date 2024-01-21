@@ -1,6 +1,6 @@
 Get Github Repository stats easily using this api. 
 
-Get number of contributors, no of lines contributed per user, No of File Contribution per user, PR Merged per user, PR Creation per user, PR Review per user. 
+Get number of contributors, no of lines contributed per user, No of File Contribution per user, PR Merged per user, PR Creation per user, PR Review per user of your repository. 
 
 Packages used :
 Flask, pygithub
