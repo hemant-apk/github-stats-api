@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@4.3.2/dist/css/coreui.min.css" rel="stylesheet"
+    integrity="sha384-H8oVKJOQVGGCdfFNM+9gLKN0xagtq9oiNLirmijheEuqD3kItTbTvoOGgxVKqNiB" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+  <title>Stratgeek</title>
+</head>
+
+<body bgcolor="gray">
+  <center>
+
+    <P>
+    <h1>Stratgeek</h1>
+    </P>
+
+    <div class="card" style="width: 50%;">
+      <div class="card-body">
+          <p><b><h4>Individual Code Contributions</h4></b></p>
+          <table id="data-s">
+              <thead>
+                  <tr>
+                      <th>Username</th>
+                      <th>No. of Line contributions</th>
+                      <th>No. of File contributions</th>
+                      <th>PRs Merged</th>
+                  </tr>
+              </thead>
+              <tbody id="table-body"></tbody>
+          </table>
+      </div>
+  </div>
+
+  </center>
+
+  <P></P>
+  <P></P>
+  <center>
+    <div class="card" style="width: 50%;">
+      <div class="card-body">
+        <P> <b><h4>PR Creation Breakdown</h4></b></P>
+
+        <div id="pr-created" style="width: 600px; height: 300px;"></div>
+        <b>*Above percentages illustrate each person's contribution to PR Creation.</b>
+      </div>
+    </div>
+  </center>
+
+  <P></P>
+  <center>
+    <div class="card" style="width: 50%;">
+      <div class="card-body">
+        <P> <b><h4>PR Review Breakdown</h4></b></P>
+
+        <div id="pr-reviewed" style="width: 600px; height: 300px;"></div>
+        <b>*Above percentages illustrate each person's contribution to PR Reviews.</b>
+      </div>
+    </div>
+  </center>
+  <P></P>
+
+</body>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  var requestOptions = {
+    method: 'GET',
+    redirect: 'follow'
+  };
+
+
+    fetch("http://127.0.0.1:5000/getContributionByUser", requestOptions)
+      .then(response => response.json())
+      .then(data => populateTable(data))
+      .catch(error => console.log('error', error));
+
+   
+    function populateTable(data) {
+        var tableBody = document.getElementById("table-body");
+
+        data.forEach(item => {
+            var row = document.createElement("tr");
+
+           
+            row.innerHTML = `
+                <td>${item.author}</td>
+                <td>${item.count.line_contributed}</td>
+                <td>${item.count.file_contributed}</td>
+                <td>${item.count.pr_merged}</td>
+            `;
+
+            
+            tableBody.appendChild(row);
+        });
+    }
+
+  google.charts.load("current", { packages: ["corechart"] });
+
+
+  fetch("http://127.0.0.1:5000/getPRCreatedByUser", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+       
+        google.charts.setOnLoadCallback(drawChart(result, "pr-created"));
+    })
+    .catch(error => console.log('error', error));
+
+
+  fetch("http://127.0.0.1:5000/getPRReviewedByUser", requestOptions)
+    .then(response => response.json())
+    .then(result => {
+        console.log(result);
+       
+        google.charts.setOnLoadCallback(drawChart(result, "pr-reviewed"));
+    })
+    .catch(error => console.log('error', error));
+
+  
+  function drawChart(data, chartElement) {
+    var dataArray = [['Author', 'Count']];
+
+    data.forEach(item => {
+        dataArray.push([item.author, item.count]);
+    });
+
+    var chartData = google.visualization.arrayToDataTable(dataArray);
+
+    var options = {
+        title: 'PRs Created by User',
+        pieHole: 0.4,
+    };
+
+    var chart = new google.visualization.PieChart(document.getElementById(chartElement));
+    chart.draw(chartData, options);
+  }
+
+</script>
+
+</html>
