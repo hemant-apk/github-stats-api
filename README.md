@@ -22,7 +22,7 @@ repo_name = "name/reponame"
 
 Run main.py to test the api. 
 
-For Visualization the data just run the index.html make sure to enable cors in your browser using any chrome extension if tested locally. 
+For Visualizing the data from api just run the index.html make sure to enable cors in your browser using any chrome extension if tested locally. 
 
 
 
